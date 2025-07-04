@@ -1,156 +1,101 @@
-Sure! Here’s a comprehensive and professional README.md file based on the information you’ve provided, tailored for a GitHub project repository:
+# 🌐 Point Cloud Classification of Propeller Geometry Using DGCNN
 
-⸻
+## 🧾 Project Overview
 
-APC Propeller Dataset and Geometry-Performance Mapping
+This project implements a pipeline for classifying point cloud representations of propeller geometries using the **Dynamic Graph Convolutional Neural Network (DGCNN)**. The input data is sourced from the **APC Propeller Dataset**, which contains propeller geometry in `.peo` format. The workflow involves converting these files to point clouds, labeling ground truth, and applying a fine-tuned DGCNN model for classification.
 
-Overview
+The current implementation achieves high training accuracy but suffers from overfitting due to limited dataset diversity. Future work focuses on automating preprocessing steps and expanding the dataset for improved generalization.
 
-This project focuses on processing and analyzing the APC Propellers dataset from APC Propellers - Performance Data, which provides geometry (.peo) and performance (.dat) data for a wide range of propellers. The overarching goal is to link geometric features with aerodynamic performance to design optimal amphibian propellers using machine learning and data-driven approaches.
+---
 
-⸻
+## 🎯 Objectives
 
-Objectives
-	•	Convert .peo geometry files to .stl mesh files suitable for 3D learning.
-	•	Associate .stl geometry with corresponding .dat performance files.
-	•	Train geometric deep learning models (specifically DGCNN) to predict or optimize performance.
-	•	Develop a streamlined approach to handle missing hub geometries.
-	•	Enable a scalable and accurate method for optimal propeller design.
+- 🔄 Convert propeller geometry from `.peo` to point cloud format  
+- 🏷️ Annotate point clouds with ground truth labels  
+- 🧠 Train and evaluate a DGCNN model for point cloud classification  
+- 🧪 Address overfitting through dataset expansion and automation of preprocessing  
 
-⸻
+---
 
-Dataset Description
+## 📂 Dataset
 
-1. Geometry Files
-	•	Format: .peo (APC Propeller proprietary format)
-	•	Contains 3D information of blade geometry only (no hub).
+The project uses the **APC Propeller Dataset**, publicly available online. Each `.peo` file contains detailed geometric information about the propeller blades and hubs, which are processed to create point clouds suitable for machine learning.
 
-Conversion Process:
-	1.	.peo → .bem Conversion
-Using Julia script from APC2BEM GitHub Repository.
+---
 
-# Run from within Julia
-julia convert_peo_to_bem.jl <input.peo>
+## 🔧 Workflow
 
+### 1. Data Acquisition
+- Obtain `.peo` files from the APC Propeller Dataset
 
-	2.	.bem → .stl Conversion
-Use OpenVSP (Open Vehicle Sketch Pad) to import .bem and export .stl.
-⚠️ Note: Only the blade geometry is present in the .stl. The hub must be manually designed and attached, which is time-consuming and error-prone. Automating or simplifying this step is a current challenge and priority.
+### 2. File Conversion
+- `.peo ➝ .bem` using Julia script:  
+  `julia peo_to_bem.jl input.peo output.bem`
+- `.bem ➝ .stl` using **OpenVSP**
+- ⚠️ Manual attachment of blades and hubs is required (automation planned)
 
-2. Performance Files
-	•	Format: .dat
-	•	Contains tabular performance data:
-	•	Thrust coefficient (Ct)
-	•	Power coefficient (Cp)
-	•	Efficiency
-	•	RPM, Airspeed, Pitch Angle, etc.
+### 3. Point Cloud Generation
+- Use **CloudCompare** to convert `.stl` to point cloud format
 
-⸻
+### 4. Ground Truth Labeling
+- Manually annotate point clouds in **CloudCompare**
 
-Model Architecture
+### 5. DGCNN Model Application
+- Preprocess point cloud for DGCNN input  
+- Fine-tune the DGCNN model  
+- Train and evaluate  
 
-We apply DGCNN (Dynamic Graph Convolutional Neural Network) for point cloud learning on 3D propeller geometry.
+---
 
-What is DGCNN?
+## 📈 Current Results
 
-DGCNN is a neural network architecture tailored for point cloud data. Unlike traditional CNNs, it dynamically constructs a graph of nearest neighbors at each layer, capturing local geometric features effectively.
-	•	Citation:
-Wang, Yue, et al. “Dynamic graph CNN for learning on point clouds.” ACM Transactions on Graphics (TOG) 38.5 (2019): 1–12.
-[Paper Link (arXiv)]
+- ✅ **Training Accuracy:** High accuracy achieved with fine-tuned DGCNN  
+- ⚠️ **Overfitting:** Small dataset leads to overfitting on training data  
+- 🔍 **Validation:** Poor generalization on unseen data confirms the need for dataset expansion  
 
-⸻
+---
 
-Current Progress
-	•	✅ Converted and trained DGCNN on first propeller .stl file — achieved 100% training accuracy.
-	•	⚠️ On two additional files, overfitting occurred due to small dataset size and high model capacity.
-	•	🔄 Currently working on linking .stl geometries to their corresponding .dat performance data.
-	•	🛠️ Looking into automating or templating hub geometry creation.
+## 🔮 Future Improvements
 
-⸻
+### 🚀 Preprocessing Automation
+- Develop a **Julia/Python script** to automate blade and hub attachment
 
-Challenges
-	•	Manual Hub Modeling: Hub geometries are missing from .peo files and must be manually modeled in OpenVSP or CAD tools. This is a bottleneck for scaling up.
-	•	Small Dataset: With limited number of propeller samples, generalization of the DGCNN model is currently poor.
-	•	Linking Data: Matching each .stl file to the correct .dat file reliably is an ongoing data preprocessing effort.
+### 📦 Dataset Expansion
+- Add more diverse `.peo` files
 
-⸻
+### 🛠️ Model Optimization
+- Use regularization, dropout, and better hyperparameter tuning
 
-Future Work
-	•	🔧 Develop or adopt a tool for automatic hub generation and attachment.
-	•	📈 Increase dataset size via:
-	•	Collecting more .peo and .dat files
-	•	Data augmentation on .stl meshes
-	•	🤖 Improve model generalization using:
-	•	Transfer learning
-	•	Regularization techniques
-	•	Data normalization
-	•	🔍 Analyze relationships between geometry features and performance metrics to generate design rules.
+### 📊 Scalability
+- Improve pipeline performance for large-scale datasets  
 
-⸻
+---
 
-How to Run
+## 📋 Prerequisites
 
-Environment:
-	•	Julia (for .peo to .bem conversion)
-	•	OpenVSP (for .bem to .stl export)
-	•	Python (for DGCNN training and evaluation)
-	•	Recommended: Python 3.8+, PyTorch ≥1.11
+- **Julia** (v1.8 or later): `.peo ➝ .bem` conversion  
+- **OpenVSP** (v3.30 or later): `.bem ➝ .stl` conversion  
+- **CloudCompare** (v2.12 or later): Point cloud generation and labeling  
+- **Python** (v3.8 or later)  
+- **Libraries**: PyTorch or TensorFlow, NumPy, etc.  
+- `requirements.txt` provided  
+- DGCNN source: [https://github.com/WangYueFt/dgcnn](https://github.com/WangYueFt/dgcnn)
 
-Steps:
-	1.	Convert .peo to .stl (see above).
-	2.	Preprocess .stl into point cloud format.
-	3.	Train DGCNN:
+---
 
-python train.py --data path_to_point_clouds --labels performance_labels.csv
+## ⚙️ Installation
 
+### 1. Install Dependencies
 
-	4.	Evaluate or visualize:
+```bash
+# Julia
+Download from https://julialang.org/
 
-python evaluate.py
+# OpenVSP
+Download from https://openvsp.org/
 
+# CloudCompare
+Download from https://www.cloudcompare.org/
 
-
-⸻
-
-Repository Structure
-
-.
-├── data/
-│   ├── raw/
-│   │   ├── *.peo
-│   │   ├── *.dat
-│   ├── processed/
-│   │   ├── *.stl
-│   │   ├── *.pcd / *.npy
-├── models/
-│   └── dgcnn/
-├── scripts/
-│   ├── convert_peo_to_bem.jl
-│   ├── stl_to_pointcloud.py
-├── notebooks/
-│   └── data_analysis.ipynb
-├── README.md
-└── requirements.txt
-
-
-⸻
-
-References
-	•	APC Propeller Technical Data
-	•	APC2BEM – Julia Conversion Code
-	•	OpenVSP - NASA
-	•	Wang, Y., Sun, Y., Liu, Z., Sarma, S. E., Bronstein, M. M., & Solomon, J. M. (2019). Dynamic graph CNN for learning on point clouds. ACM TOG. arXiv:1801.07829
-
-⸻
-
-Contact
-
-For questions or collaboration, please contact:
-
-[Your Name]
-Email: [your-email@example.com]
-GitHub: [your-github-profile]
-
-⸻
-
-Let me know if you’d like a badge section, license, or auto-install script too.
+# Python Libraries
+pip install -r requirements.txt
