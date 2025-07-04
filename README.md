@@ -1,8 +1,3 @@
-![Python](https://img.shields.io/badge/Language-Python-blue)
-![PointCloud](https://img.shields.io/badge/Framework-FastAPI-green)
-![DGCNN](https://img.shields.io/badge/Domain-ComputerVision-purple)
-![3d-mesh](https://img.shields.io/badge/Status-In_Progress-orange)
-
 # 🌐 Point Cloud Classification of Propeller Geometry Using DGCNN
 
 ## 🧾 Project Overview
